@@ -22,3 +22,6 @@ target/
 
 # mac
 .DS_store
+
+build
+.gradle

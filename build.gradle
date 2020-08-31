@@ -1,0 +1,71 @@
+plugins {
+    id 'java'
+    id 'jacoco'
+}
+
+repositories {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/LarsEckart/tcr-extension")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("GH_USERNAME")
+                password = project.findProperty("gpr.key") ?: System.getenv("GH_TOKEN")
+            }
+        }
+    }
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.fusesource.jansi:jansi:1.18'
+    implementation 'org.seleniumhq.selenium:selenium-java:3.141.59'
+    implementation 'org.eclipse.jetty:jetty-server:[9.4.17.v20190418,9.99.99)'
+    implementation 'org.eclipse.jetty:jetty-servlet:[9.4.17.v20190418,9.99.99)'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
+    testImplementation 'org.assertj:assertj-core:3.16.0'
+    testImplementation 'io.cucumber:cucumber-java:5.6.0'
+    testImplementation 'io.cucumber:cucumber-junit:5.6.0'
+    testImplementation 'org.junit.vintage:junit-vintage-engine:5.6.2'
+    testImplementation 'com.approvaltests:approvaltests:9.3.0'
+    testImplementation("com.github.larseckart:tcr-extension:0.3.0")
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs.add("-Xlint:all")
+    options.incremental = true
+    options.encoding = 'UTF-8'
+
+    if (jdkWithPreviewFeatures())
+        options.compilerArgs.add("--enable-preview")
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+    finalizedBy jacocoTestReport
+
+    if (jdkWithPreviewFeatures())
+        jvmArgs("--enable-preview")
+}
+
+static def jdkWithPreviewFeatures() {
+    def currentJvm = org.gradle.internal.jvm.Jvm.current()
+    def matcher = currentJvm =~ /^\d+/
+    return matcher[0].toInteger() > 11
+}
+
+jacoco {
+    toolVersion = "0.8.5"
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination file("${buildDir}/jacocoHtml")
+    }
+}
