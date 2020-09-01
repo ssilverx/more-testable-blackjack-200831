@@ -14,13 +14,7 @@ public class Card {
   }
 
   public int rankValue() {
-    if ("JQK".contains(rank.getValue())) {
-      return 10;
-    } else if (rank.getValue().equals("A")) {
-      return 1;
-    } else {
-      return Integer.parseInt(rank.getValue());
-    }
+    return rank.value();
   }
 
   public String display() {

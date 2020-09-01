@@ -14,8 +14,14 @@ class Rank {
         return new Rank(value);
     }
 
-    public String getValue() {
-        return value;
+    int value() {
+        if ("JQK".contains(value)) {
+        return 10;
+      } else if (value.equals("A")) {
+        return 1;
+      } else {
+            return Integer.parseInt(value);
+      }
     }
 
     @Override public boolean equals(Object o) {
