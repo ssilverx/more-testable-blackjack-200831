@@ -1,11 +1,14 @@
 package com.jitterted.ebp.blackjack;
 
+import com.github.larseckart.tcr.TestCommitRevertMainExtension;
 import com.jitterted.ebp.blackjack.Card;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.fusesource.jansi.Ansi.ansi;
 
+@ExtendWith(TestCommitRevertMainExtension.class)
 class CardTest {
 
   @Test

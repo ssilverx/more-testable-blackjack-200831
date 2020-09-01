@@ -9,10 +9,9 @@ public class Deck {
 
   public Deck() {
     var cardValues = List.of("A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K");
-    var suits = List.of("♠", "♦", "♥", "♣");
-    for (String suit : suits) {
+    for (Suit suit : Suit.values()) {
       for (String cardValue : cardValues) {
-        cards.add(new Card(suit, cardValue));
+        cards.add(new Card(suit.getValue(), cardValue));
       }
     }
     Collections.shuffle(cards);
