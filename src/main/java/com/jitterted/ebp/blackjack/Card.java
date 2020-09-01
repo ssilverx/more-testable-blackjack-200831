@@ -8,10 +8,6 @@ public class Card {
   private final Suit suit;
   private final String rank;
 
-  public Card(String suit, String rank) {
-    this(Suit.get(suit), rank);
-  }
-
   public Card(Suit suit, String rank) {
     this.suit = suit;
     this.rank = rank;
