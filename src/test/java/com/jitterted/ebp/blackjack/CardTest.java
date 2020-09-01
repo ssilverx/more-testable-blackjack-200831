@@ -12,7 +12,7 @@ class CardTest {
 
   @Test
   public void withNumberCardHasNumericValueOfTheNumber() throws Exception {
-    Card card = new Card(Suit.get("don't care"), "7");
+    Card card = new Card(Suit.DIAMOND, "7");
 
     assertThat(card.rankValue())
         .isEqualTo(7);
@@ -20,7 +20,7 @@ class CardTest {
 
   @Test
   public void withValueOfQueenHasNumericValueOf10() throws Exception {
-    Card card = new Card(Suit.get("X"), "Q");
+    Card card = new Card(Suit.DIAMOND, "Q");
 
     assertThat(card.rankValue())
         .isEqualTo(10);
@@ -28,7 +28,7 @@ class CardTest {
 
   @Test
   public void withAceHasNumericValueOf1() throws Exception {
-    Card card = new Card(Suit.get("don't care"), "A");
+    Card card = new Card(Suit.DIAMOND, "A");
 
     assertThat(card.rankValue())
         .isEqualTo(1);
