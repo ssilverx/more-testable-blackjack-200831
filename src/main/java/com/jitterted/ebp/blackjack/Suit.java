@@ -7,7 +7,7 @@ public enum Suit {
     boolean isRed() {
         return "♥".equals(value) || "♦".contains(value);
     }
-    
+
     Suit(String value) {
         this.value = value;
     }
