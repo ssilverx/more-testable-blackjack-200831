@@ -13,6 +13,11 @@ public class Card {
     this.rank = rank;
   }
 
+  public Card(Suit suit, String rank) {
+    this.suit = suit;
+    this.rank = rank;
+  }
+
   public int rankValue() {
     if ("JQK".contains(rank)) {
       return 10;
