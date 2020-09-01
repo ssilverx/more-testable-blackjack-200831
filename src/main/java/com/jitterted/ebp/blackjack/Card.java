@@ -33,7 +33,7 @@ public class Card {
     lines[5] = String.format("│       %s%s│", rank.equals("10") ? "" : " ", rank);
     lines[6] = "└─────────┘";
 
-    Ansi.Color cardColor = "♥♦".contains(suit.getValue()) ? Ansi.Color.RED : Ansi.Color.BLACK;
+    Ansi.Color cardColor = suit.getCardColor();
     return ansi()
         .fg(cardColor).toString()
         + String.join(ansi().cursorDown(1)

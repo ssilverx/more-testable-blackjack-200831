@@ -1,11 +1,17 @@
 package com.jitterted.ebp.blackjack;
 
+import org.fusesource.jansi.Ansi;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public enum Suit {
     PIKE("♠"), DIAMOND("♦"), HEART("♥"), CLOVER("♣");
     private String value;
+
+    Ansi.Color getCardColor() {
+      return "♥♦".contains(getValue()) ? Ansi.Color.RED : Ansi.Color.BLACK;
+    }
 
     public String getValue() {
         return value;
