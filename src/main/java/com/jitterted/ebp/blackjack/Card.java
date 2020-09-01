@@ -9,8 +9,7 @@ public class Card {
   private final String rank;
 
   public Card(String suit, String rank) {
-    this.suit = Suit.get(suit);
-    this.rank = rank;
+    this(Suit.get(suit), rank);
   }
 
   public Card(Suit suit, String rank) {
