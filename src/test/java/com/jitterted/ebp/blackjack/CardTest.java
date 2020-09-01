@@ -37,8 +37,8 @@ class CardTest {
   @Test
   public void suitOfHeartsOrDiamondsIsDisplayedInRed() throws Exception {
     // given a card with Hearts or Diamonds
-    Card heartsCard = new Card(Suit.get("♥"), "10");
-    Card diamondsCard = new Card(Suit.get("♦"), "8");
+    Card heartsCard = new Card(Suit.HEART, "10");
+    Card diamondsCard = new Card(Suit.DIAMOND, "8");
 
     // when we ask for its display representation
     String ansiRedString = ansi().fgRed().toString();
