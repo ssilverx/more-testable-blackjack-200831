@@ -6,20 +6,20 @@ import static org.fusesource.jansi.Ansi.ansi;
 
 public class Card {
   private final Suit suit;
-  private final String rank;
+  private final Rank rank;
 
   public Card(Suit suit, String rank) {
     this.suit = suit;
-    this.rank = rank;
+    this.rank = Rank.of(rank);
   }
 
   public int rankValue() {
-    if ("JQK".contains(rank)) {
+    if ("JQK".contains(rank.getValue())) {
       return 10;
-    } else if (rank.equals("A")) {
+    } else if (rank.getValue().equals("A")) {
       return 1;
     } else {
-      return Integer.parseInt(rank);
+      return Integer.parseInt(rank.getValue());
     }
   }
 
