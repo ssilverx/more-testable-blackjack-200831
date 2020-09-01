@@ -5,9 +5,9 @@ public enum Suit {
     private String value;
 
     boolean isRed() {
-        return "♥♦".contains(value);
+        return "♥".equals(value) || "♦".contains(value);
     }
-
+    
     Suit(String value) {
         this.value = value;
     }
