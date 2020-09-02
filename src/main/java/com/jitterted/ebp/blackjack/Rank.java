@@ -13,7 +13,7 @@ class Rank {
     public static Rank of(String value) {
         if ("JQK".contains(value)) {
             return new Royal(value);
-        } else if (value.equals("A")) {
+        } else if ("A".equals(value)) {
             return new Ace("A");
         } else {
             return new Rank(value);
@@ -24,7 +24,8 @@ class Rank {
         return Integer.parseInt(value);
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return "" + value;
     }
 
