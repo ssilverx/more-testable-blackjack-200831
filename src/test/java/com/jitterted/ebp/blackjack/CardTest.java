@@ -1,6 +1,7 @@
 package com.jitterted.ebp.blackjack;
 
 import com.github.larseckart.tcr.TestCommitRevertMainExtension;
+import org.approvaltests.Approvals;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -48,6 +49,18 @@ class CardTest {
         .contains(ansiRedString);
     assertThat(diamondsCard.display())
         .contains(ansiRedString);
+  }
+
+  @Test
+  void card_display() throws Exception {
+    Card card = new Card(Suit.HEART, Rank.of("10"));
+    Approvals.verify(card.display());
+  }
+
+  @Test
+  void card_display_2() throws Exception {
+    Card card = new Card(Suit.HEART, Rank.of("J"));
+    Approvals.verify(card.display());
   }
 
 }
