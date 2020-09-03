@@ -1,5 +1,6 @@
 package com.jitterted.ebp.blackjack;
 
+import java.util.Random;
 import org.fusesource.jansi.Ansi;
 
 import java.util.ArrayList;
@@ -17,7 +18,11 @@ public class Game {
   private final List<Card> playerHand = new ArrayList<>();
 
   public static void main(String[] args) {
-    Game game = new Game();
+    applesauce(new Random(2), new ScannerInput(new Scanner(System.in)));
+  }
+
+  public static void applesauce(Random rnd, UserInput scannerInput) {
+    Game game = new Game(rnd);
 
     System.out.println(ansi()
                            .bgBright(Ansi.Color.WHITE)
@@ -27,15 +32,14 @@ public class Game {
                            .fgRed().a(" Jitterted's")
                            .fgBlack().a(" BlackJack"));
 
-
     game.initialDeal();
-    game.play();
+    game.play(scannerInput);
 
     System.out.println(ansi().reset());
   }
 
-  public Game() {
-    deck = new Deck();
+  public Game(Random rnd) {
+    deck = new Deck(rnd);
   }
 
   public void initialDeal() {
@@ -49,12 +53,12 @@ public class Game {
     dealerHand.add(deck.draw());
   }
 
-  public void play() {
+  public void play(UserInput userInput) {
     // get Player's decision: hit until they stand, then they're done (or they go bust)
     boolean playerBusted = false;
     while (!playerBusted) {
       displayGameState();
-      String playerChoice = inputFromPlayer().toLowerCase();
+      String playerChoice = inputFromPlayer(userInput).toLowerCase();
       if (playerChoice.startsWith("s")) {
         break;
       }
@@ -109,10 +113,9 @@ public class Game {
     return handValue;
   }
 
-  private String inputFromPlayer() {
+  private String inputFromPlayer(UserInput scannerInput) {
     System.out.println("[H]it or [S]tand?");
-    Scanner scanner = new Scanner(System.in);
-    return scanner.nextLine();
+    return scannerInput.getUserInput();
   }
 
   private void displayGameState() {
