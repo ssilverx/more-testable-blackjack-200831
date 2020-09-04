@@ -1,4 +1,4 @@
-package com.jitterted.ebp.blackjack;
+package com.jitterted.ebp.blackjack.web;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

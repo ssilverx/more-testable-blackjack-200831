@@ -1,5 +1,7 @@
-package com.jitterted.ebp.blackjack;
+package com.jitterted.ebp.blackjack.web;
 
+import com.jitterted.ebp.blackjack.web.BlackjackServlet;
+import com.jitterted.ebp.blackjack.web.HomeServlet;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
