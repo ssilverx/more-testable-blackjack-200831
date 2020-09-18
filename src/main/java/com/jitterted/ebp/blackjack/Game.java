@@ -17,7 +17,7 @@ public class Game {
   private final List<Card> playerHand = new ArrayList<>();
 
   public static void main(String[] args) {
-      playTestable(new UserInput(), new Random());
+      playTestable(new ScannerUserInput(), new Random());
   }
 
     public static void playTestable(UserInput userInput, Random rnd) {

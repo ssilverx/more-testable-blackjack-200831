@@ -26,6 +26,7 @@ package com.jitterted.ebp.blackjack;
 
 import org.approvaltests.Approvals;
 import org.approvaltests.core.Options;
+import org.approvaltests.legacycode.Range;
 import org.approvaltests.reporters.ClipboardReporter;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -41,27 +42,26 @@ import java.util.Random;
 class GameTest {
 
     @Test
-    void name() {
-        // given
-        final UserInput userInput = new UserInput() {
-            @Override
-            String getUserInput() {
-                return "s";
-            }
-        };
+    void stand() {
+        Approvals.verifyAll("blackjack", Range.get(1337, 1350), i -> playTheGame("s", i), new Options(new ClipboardReporter()));
+    }
 
-        // when
+    private String playTheGame(String command, long seed) {
+        final UserInput userInput = () -> command;
+
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             System.setOut(new PrintStream(baos, true, StandardCharsets.UTF_8));
 
-            Game.playTestable(userInput, new Random(1337L));
+            Game.playTestable(userInput, new Random(seed));
 
-            Approvals.verify(baos.toString(), new Options(new ClipboardReporter()));
+            return baos.toString();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
 
-        // then
-
+    @Test
+    void hit() {
+        Approvals.verify(playTheGame("h", 1337L), new Options(new ClipboardReporter()));
     }
 }
