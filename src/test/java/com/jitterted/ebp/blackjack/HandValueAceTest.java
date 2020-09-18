@@ -15,7 +15,7 @@ public class HandValueAceTest {
     var hand = List.of(new Card("whocares", "A"),
                        new Card("whocares", "5"));
 
-    assertThat(game.handValueOf(hand))
+    assertThat(new Hand(hand).handValueOf())
         .isEqualTo(11 + 5);
   }
 
@@ -26,7 +26,7 @@ public class HandValueAceTest {
                        new Card("whocares", "8"),
                        new Card("whocares", "3"));
 
-    assertThat(game.handValueOf(hand))
+    assertThat(new Hand(hand).handValueOf())
         .isEqualTo(1 + 8 + 3);
   }
 

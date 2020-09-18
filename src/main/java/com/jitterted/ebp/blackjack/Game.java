@@ -5,7 +5,6 @@ import org.fusesource.jansi.Ansi;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import static org.fusesource.jansi.Ansi.ansi;
 
@@ -15,6 +14,7 @@ public class Game {
 
     private final List<Card> dealerHand = new ArrayList<>();
     private final List<Card> playerHand = new ArrayList<>();
+    private Hand appleSauce = new Hand(playerHand);
 
     public static void main(String[] args) {
         playTestable(new ScannerUserInput(), new Random());
@@ -42,14 +42,14 @@ public class Game {
     }
 
     public void initialDeal() {
-
         // deal first round of cards, players first
-        playerHand.add(deck.draw());
-        dealerHand.add(deck.draw());
+//        appleSauce = appleSauce;
+        appleSauce.addCard(deck);
+        new Hand(dealerHand).addCard(deck);
 
         // deal next round of cards
-        playerHand.add(deck.draw());
-        dealerHand.add(deck.draw());
+        appleSauce.addCard(deck);
+        new Hand(dealerHand).addCard(deck);
     }
 
     public void play(UserInput userInput) {
@@ -62,8 +62,8 @@ public class Game {
                 break;
             }
             if (playerChoice.startsWith("h")) {
-                playerHand.add(deck.draw());
-                if (handValueOf(playerHand) > 21) {
+                appleSauce.addCard(deck);
+                if (appleSauce.handValueOf() > 21) {
                     playerBusted = true;
                 }
             } else {
@@ -73,8 +73,8 @@ public class Game {
 
         // Dealer makes its choice automatically based on a simple heuristic (<=16, hit, 17>stand)
         if (!playerBusted) {
-            while (handValueOf(dealerHand) <= 16) {
-                dealerHand.add(deck.draw());
+            while (new Hand(dealerHand).handValueOf() <= 16) {
+                new Hand(dealerHand).addCard(deck);
             }
         }
 
@@ -82,34 +82,15 @@ public class Game {
 
         if (playerBusted) {
             System.out.println("You Busted, so you lose.  💸");
-        } else if (handValueOf(dealerHand) > 21) {
+        } else if (new Hand(dealerHand).handValueOf() > 21) {
             System.out.println("Dealer went BUST, Player wins! Yay for you!! 💵");
-        } else if (handValueOf(dealerHand) < handValueOf(playerHand)) {
+        } else if (new Hand(dealerHand).handValueOf() < appleSauce.handValueOf()) {
             System.out.println("You beat the Dealer! 💵");
-        } else if (handValueOf(dealerHand) == handValueOf(playerHand)) {
+        } else if (new Hand(dealerHand).handValueOf() == appleSauce.handValueOf()) {
             System.out.println("Push: The house wins, you Lose. 💸");
         } else {
             System.out.println("You lost to the Dealer. 💸");
         }
-    }
-
-    public int handValueOf(List<Card> hand) {
-        int handValue = hand
-                .stream()
-                .mapToInt(Card::rankValue)
-                .sum();
-
-        // does the hand contain at least 1 Ace?
-        boolean hasAce = hand
-                .stream()
-                .anyMatch(card -> card.rankValue() == 1);
-
-        // if the total hand value <= 11, then count the Ace as 11 by adding 10
-        if (hasAce && handValue < 11) {
-            handValue += 10;
-        }
-
-        return handValue;
     }
 
     private String inputFromPlayer(UserInput userInput) {
@@ -120,7 +101,7 @@ public class Game {
     private void displayGameState() {
         System.out.print(ansi().eraseScreen().cursor(1, 1));
         System.out.println("Dealer has: ");
-        System.out.println(dealerHand.get(0).display()); // first card is Face Up
+        System.out.println(new Hand(dealerHand).first().display()); // first card is Face Up
 
         // second card is the hole card, which is hidden
         displayBackOfCard();
@@ -128,7 +109,7 @@ public class Game {
         System.out.println();
         System.out.println("Player has: ");
         displayHand(playerHand);
-        System.out.println(" (" + handValueOf(playerHand) + ")");
+        System.out.println(" (" + appleSauce.handValueOf() + ")");
     }
 
     private void displayBackOfCard() {
@@ -145,22 +126,19 @@ public class Game {
                         .a("└─────────┘"));
     }
 
-    private void displayHand(List<Card> hand) {
-        System.out.println(hand.stream()
-                               .map(Card::display)
-                               .collect(Collectors.joining(
-                                       ansi().cursorUp(6).cursorRight(1).toString())));
-    }
-
     private void displayFinalGameState() {
         System.out.print(ansi().eraseScreen().cursor(1, 1));
         System.out.println("Dealer has: ");
         displayHand(dealerHand);
-        System.out.println(" (" + handValueOf(dealerHand) + ")");
+        System.out.println(" (" + new Hand(dealerHand).handValueOf() + ")");
 
         System.out.println();
         System.out.println("Player has: ");
         displayHand(playerHand);
-        System.out.println(" (" + handValueOf(playerHand) + ")");
+        System.out.println(" (" + appleSauce.handValueOf() + ")");
+    }
+
+    private void displayHand(List<Card> hand) {
+        System.out.println(new Hand(hand).asString());
     }
 }
