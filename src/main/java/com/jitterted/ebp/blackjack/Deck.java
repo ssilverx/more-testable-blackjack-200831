@@ -6,24 +6,25 @@ import java.util.List;
 import java.util.Random;
 
 public class Deck {
-  private final List<Card> cards = new ArrayList<>();
 
-  public Deck(Random rnd) {
-    var cardValues = List.of("A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K");
-    var suits = List.of("♠", "♦", "♥", "♣");
-    for (String suit : suits) {
-      for (String cardValue : cardValues) {
-        cards.add(new Card(suit, cardValue));
-      }
+    private final List<Card> cards = new ArrayList<>();
+
+    public Deck(Random rnd) {
+        var cardValues = List.of("A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K");
+        var suits = List.of("♠", "♦", "♥", "♣");
+        for (String suit : suits) {
+            for (String cardValue : cardValues) {
+                cards.add(new Card(suit, cardValue));
+            }
+        }
+        Collections.shuffle(cards, rnd);
     }
-    Collections.shuffle(cards, rnd);
-  }
 
-  public int size() {
-    return cards.size();
-  }
+    public int size() {
+        return cards.size();
+    }
 
-  public Card draw() {
-    return cards.remove(0);
-  }
+    public Card draw() {
+        return cards.remove(0);
+    }
 }
