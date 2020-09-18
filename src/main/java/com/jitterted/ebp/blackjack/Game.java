@@ -4,7 +4,7 @@ import org.fusesource.jansi.Ansi;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import static org.fusesource.jansi.Ansi.ansi;
@@ -17,25 +17,28 @@ public class Game {
   private final List<Card> playerHand = new ArrayList<>();
 
   public static void main(String[] args) {
-    Game game = new Game();
-
-    System.out.println(ansi()
-                           .bgBright(Ansi.Color.WHITE)
-                           .eraseScreen()
-                           .cursor(1, 1)
-                           .fgGreen().a("Welcome to")
-                           .fgRed().a(" Jitterted's")
-                           .fgBlack().a(" BlackJack"));
-
-
-    game.initialDeal();
-    game.play();
-
-    System.out.println(ansi().reset());
+      playTestable(new UserInput(), new Random());
   }
 
-  public Game() {
-    deck = new Deck();
+    public static void playTestable(UserInput userInput, Random rnd) {
+        Game game = new Game(rnd);
+
+        System.out.println(ansi()
+                               .bgBright(Ansi.Color.WHITE)
+                               .eraseScreen()
+                               .cursor(1, 1)
+                               .fgGreen().a("Welcome to")
+                               .fgRed().a(" Jitterted's")
+                               .fgBlack().a(" BlackJack"));
+
+        game.initialDeal();
+        game.play(userInput);
+
+        System.out.println(ansi().reset());
+    }
+
+    public Game(Random rnd) {
+    deck = new Deck(rnd);
   }
 
   public void initialDeal() {
@@ -49,12 +52,12 @@ public class Game {
     dealerHand.add(deck.draw());
   }
 
-  public void play() {
+  public void play(UserInput userInput) {
     // get Player's decision: hit until they stand, then they're done (or they go bust)
     boolean playerBusted = false;
     while (!playerBusted) {
       displayGameState();
-      String playerChoice = inputFromPlayer().toLowerCase();
+      String playerChoice = inputFromPlayer(userInput).toLowerCase();
       if (playerChoice.startsWith("s")) {
         break;
       }
@@ -109,13 +112,12 @@ public class Game {
     return handValue;
   }
 
-  private String inputFromPlayer() {
+  private String inputFromPlayer(UserInput userInput) {
     System.out.println("[H]it or [S]tand?");
-    Scanner scanner = new Scanner(System.in);
-    return scanner.nextLine();
+      return userInput.getUserInput();
   }
 
-  private void displayGameState() {
+    private void displayGameState() {
     System.out.print(ansi().eraseScreen().cursor(1, 1));
     System.out.println("Dealer has: ");
     System.out.println(dealerHand.get(0).display()); // first card is Face Up

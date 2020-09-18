@@ -1,10 +1,9 @@
 package com.jitterted.ebp.blackjack;
 
-import com.jitterted.ebp.blackjack.Card;
-import com.jitterted.ebp.blackjack.Deck;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.*;
@@ -15,7 +14,7 @@ class DeckTest {
 
   @Test
   public void fullDeckHas52Cards() throws Exception {
-    Deck deck = new Deck();
+    Deck deck = new Deck(new Random());
 
     assertThat(deck.size())
         .isEqualTo(52);
@@ -23,7 +22,7 @@ class DeckTest {
 
   @Test
   public void drawCardFromDeckReducesDeckSizeByOne() throws Exception {
-    Deck deck = new Deck();
+    Deck deck = new Deck(new Random());
 
     deck.draw();
 
@@ -33,7 +32,7 @@ class DeckTest {
 
   @Test
   public void drawCardFromDeckReturnsValidCard() throws Exception {
-    Deck deck = new Deck();
+    Deck deck = new Deck(new Random());
 
     Card card = deck.draw();
 
@@ -46,7 +45,7 @@ class DeckTest {
 
   @Test
   public void drawAllCardsResultsInSetOf52UniqueCards() throws Exception {
-    Deck deck = new Deck();
+    Deck deck = new Deck(new Random());
 
     Set<Card> drawnCards = new HashSet<>();
     for (int i = 1; i <= 52; i++) {
