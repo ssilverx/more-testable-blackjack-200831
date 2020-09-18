@@ -1,5 +1,6 @@
 package com.jitterted.ebp.blackjack;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,33 +10,33 @@ public class Hand {
 
     private final List<Card> hand;
 
-    public Hand(List<Card> hand) {
-        this.hand = hand;
+    public Hand() {
+        this.hand = new ArrayList<>();
     }
 
-    void addCard(Deck deck) {
-        getHand().add(deck.draw());
+    void addCard(Card card) {
+        hand.add(card);
     }
 
     String asString() {
-        return getHand().stream()
-                    .map(Card::display)
-                    .collect(Collectors.joining(
+        return hand.stream()
+                   .map(Card::display)
+                   .collect(Collectors.joining(
                            ansi().cursorUp(6).cursorRight(1).toString()));
     }
 
     Card first() {
-        return getHand().get(0);
+        return hand.get(0);
     }
 
     public int handValueOf() {
-        int handValue = getHand()
+        int handValue = hand
                              .stream()
                              .mapToInt(Card::rankValue)
                              .sum();
 
         // does the hand contain at least 1 Ace?
-        boolean hasAce = getHand()
+        boolean hasAce = hand
                               .stream()
                               .anyMatch(card -> card.rankValue() == 1);
 
@@ -45,9 +46,5 @@ public class Hand {
         }
 
         return handValue;
-    }
-
-    public List<Card> getHand() {
-        return hand;
     }
 }
